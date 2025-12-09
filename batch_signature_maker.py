@@ -23,6 +23,9 @@ def load_owners(json_file):
         data = json.load(f)
 
     owners = data.get('owners', {})
+    # Convert owners to lowercase for output
+    owners = {k: v.lower() for k, v in owners.items()}
+    # Keep checksummed for signing process
     unique_addresses = {to_checksum_address(addr) for addr in owners.values()}
     print(f"Found {len(unique_addresses)} unique addresses")
     return data, owners, unique_addresses
@@ -63,8 +66,9 @@ def generate_signatures(chainid, contract, unique_addresses, private_key):
     for account_address in unique_addresses:
         try:
             sig = sign_for_address(chainid, contract, account_address, private_key)
-            signatures[account_address] = sig
-            print(f"Signed for {account_address}")
+            # Store with lowercase key for output
+            signatures[account_address.lower()] = sig
+            print(f"Signed for {account_address.lower()}")
         except Exception as e:
             print(f"Error signing for {account_address}: {str(e)}")
             continue
@@ -74,7 +78,7 @@ def generate_signatures(chainid, contract, unique_addresses, private_key):
 def save_output(output_file, chainid, contract, data, owners, signatures):
     output_data = {
         "chainid": chainid,
-        "contract": contract,
+        "contract": contract.lower(),
         "block": data.get('block'),
         "owners": owners,
         "signatures": signatures
