@@ -46,7 +46,7 @@ def get_contract(w3, network):
     address = to_checksum_address(CONTRACT_ADDRESSES[network])
     max_id = MAX_TOKEN_IDS[network]
     contract = w3.eth.contract(address=address, abi=contract_abi)
-    return contract, address, max_id
+    return contract, address.lower(), max_id
 
 
 def fetch_owner(contract, token_id, block_number):
@@ -54,7 +54,7 @@ def fetch_owner(contract, token_id, block_number):
     try:
         owner = contract.functions.ownerOf(token_id).call(block_identifier=block_number)
         if owner and owner != "0x0000000000000000000000000000000000000000":
-            return to_checksum_address(owner)
+            return owner.lower()
     except Exception:
         return None
     return None

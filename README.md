@@ -19,5 +19,5 @@ python3 nft_holder_snapshot.py --block %BLOCK_NUMBER% --network testnet --rpc ht
 # Generating Signatures
 
 ```
-python signature_script2.py --chainid %1 or 11155111% --contract %WHITELIST_CONTRACT% --json-file %SNAPSHOT% --private-key %PK% --output %RESULT%
+python batch_signature_maker.py --chainid %1 or 11155111% --contract %WHITELIST_CONTRACT% --json-file %SNAPSHOT% --private-key %PK% --output %RESULT%
 ```
